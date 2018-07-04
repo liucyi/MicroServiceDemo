@@ -14,7 +14,8 @@ namespace MicroService.Api1.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { $"ClinetService: {DateTime.Now.ToString()} {Environment.MachineName} " +
+                $"OS: {Environment.OSVersion.VersionString}" };
         }
 
         // GET api/values/5
