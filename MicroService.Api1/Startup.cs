@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Consul;
@@ -11,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
- 
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace MicroService.Api1
 {
@@ -26,8 +27,30 @@ namespace MicroService.Api1
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {  
+        {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
+            #region Swagger
+            services.AddSwaggerGen(s =>
+                     {
+                         s.SwaggerDoc(Configuration["Service:DocName"], new Info
+                         {
+                             Title = Configuration["Service:Title"],
+                             Version = Configuration["Service:Version"],
+                             Description = Configuration["Service:Description"],
+                             Contact = new Contact
+                             {
+                                 Name = Configuration["Service:Contact:Name"],
+                                 Email = Configuration["Service:Contact:Email"]
+                             }
+                         });
+
+                //var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                //var xmlPath = Path.Combine(basePath, Configuration["Service:XmlFile"]);
+                //s.IncludeXmlComments(xmlPath);
+            });
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +63,7 @@ namespace MicroService.Api1
             }
 
             app.UseMvc();
-         
+
             #region Consul
 
             String ip = Configuration["ip"];//部署到不同服务器的时候不能写成127.0.0.1或者0.0.0.0，因为这是让服务消费者调用的地址
@@ -67,8 +90,21 @@ namespace MicroService.Api1
             {
                 Console.WriteLine("注销方法");
                 client.Agent.ServiceDeregister(serverId).Wait();//服务停止时取消注册
-            }); 
+            });
             #endregion
+           
+            #region swagger
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "doc/{documentName}/swagger.json";
+            });
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint($"/doc/{Configuration["Service:DocName"]}/swagger.json",
+                    $"{Configuration["Service:Name"]} {Configuration["Service:Version"]}");
+            });
+            #endregion
+          
         }
         private static void ConfigurationOverview(ConsulClientConfiguration obj)
         {

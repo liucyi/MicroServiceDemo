@@ -11,9 +11,18 @@ namespace MicroService.Api1.Controllers
     public class OneValuesController : ControllerBase
     {
         // GET api/values
+        private static int _count = 0;
+        // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IEnumerable<string> Get()
         {
+            _count++;
+            Console.WriteLine($"Get...{_count}");
+            if (_count <= 3)
+            {
+                System.Threading.Thread.Sleep(5000);
+            }
+
             return new string[] { $"ClinetService: {DateTime.Now.ToString()} {Environment.MachineName} " +
                 $"OS: {Environment.OSVersion.VersionString}" };
         }
