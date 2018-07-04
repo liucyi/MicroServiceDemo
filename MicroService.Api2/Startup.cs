@@ -48,7 +48,7 @@ namespace MicroService.Api2
             String ip = Configuration["ip"];//部署到不同服务器的时候不能写成127.0.0.1或者0.0.0.0，因为这是让服务消费者调用的地址
             int port = int.Parse(Configuration["port"]);//获取服务端口
             var client = new ConsulClient(ConfigurationOverview); //回调获取
-            string serverId = "ServerNameFirst1" + Guid.NewGuid();
+            string serverId = "MicroService.Api2";
 
             var result = client.Agent.ServiceRegister(new AgentServiceRegistration()
             {

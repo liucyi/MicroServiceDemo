@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+ 
 
 namespace MicroService.Api1
 {
@@ -25,7 +26,7 @@ namespace MicroService.Api1
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {  
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -39,12 +40,13 @@ namespace MicroService.Api1
             }
 
             app.UseMvc();
+         
             #region Consul
 
             String ip = Configuration["ip"];//部署到不同服务器的时候不能写成127.0.0.1或者0.0.0.0，因为这是让服务消费者调用的地址
             int port = int.Parse(Configuration["port"]);//获取服务端口
             var client = new ConsulClient(ConfigurationOverview); //回调获取
-            string serverId = "ServerNameFirst1" + Guid.NewGuid();
+            string serverId = "MicroService.Api1";
 
             var result = client.Agent.ServiceRegister(new AgentServiceRegistration()
             {

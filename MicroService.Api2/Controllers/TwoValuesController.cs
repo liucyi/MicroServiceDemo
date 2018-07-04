@@ -8,7 +8,7 @@ namespace MicroService.Api2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class TwoValuesController : ControllerBase
     {
         // GET api/values
         [HttpGet]

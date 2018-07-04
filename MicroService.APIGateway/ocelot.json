@@ -1,0 +1,36 @@
+﻿{
+  "ReRoutes": [
+    // API:CAS.ClientService
+    {
+      "DownstreamPathTemplate": "/api/OneValues",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": "5001"
+        }
+      ],
+      "UpstreamPathTemplate": "/OneValues",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    }, // API:CAS.ClientService
+    {
+      "DownstreamPathTemplate": "/api/TwoValues",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": "5002"
+        }
+      ],
+      "UpstreamPathTemplate": "/TwoValues",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    //"BaseUrl": "https://api.mybusiness.com"
+    "ServiceDiscoveryProvider": {
+      "Host": "127.0.0.1", // Consul Service IP
+      "Port": 8500 // Consul Service Port
+    }
+  }
+}

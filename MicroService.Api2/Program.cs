@@ -15,6 +15,7 @@ namespace MicroService.Api2
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
+            Console.Title = "MicroService.Api2";
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

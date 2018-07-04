@@ -8,19 +8,22 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace MicroService.Api1
+namespace MicroService.APIGateway
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            Console.Title = "MicroService.Api1";
+            Console.Title = "MicroService.APIGateway";
             CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseUrls("http://localhost:5001")
+            .ConfigureAppConfiguration((hostingContext, builder) =>
+            {
+                builder.AddJsonFile("ocelot.json", false, true);
+            })
                 .UseStartup<Startup>();
     }
 }
