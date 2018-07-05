@@ -117,7 +117,7 @@ namespace MicroService.Api1
         private static void ConfigurationOverview(ConsulClientConfiguration obj)
         {
             //consul的地址
-            obj.Address = new Uri("http://192.168.3.38:8500");
+            obj.Address = new Uri("http://127.0.0.1:8500");
             //数据中心命名
             obj.Datacenter = "dc1";
         }
