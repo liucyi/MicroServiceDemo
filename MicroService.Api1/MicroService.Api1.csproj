@@ -15,11 +15,14 @@
   <ItemGroup>
     <PackageReference Include="Consul" Version="0.7.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
 
     <PackageReference Include="Polly" Version="6.0.1" />
 
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.5.0" />
+
+    <PackageReference Include="System.Reactive.PlatformServices" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +31,6 @@
     </Content>
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties ocelot_1json__JSONSchema="http://json.schemastore.org/appsettings" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

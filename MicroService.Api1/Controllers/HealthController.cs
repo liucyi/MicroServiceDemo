@@ -15,7 +15,7 @@ namespace MicroService.Api1.Controllers
         private static readonly HttpClient _httpClient;
 
         static HealthController()
-        {
+        { 
             _httpClient = new HttpClient();
         }
 

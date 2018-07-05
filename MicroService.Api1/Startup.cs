@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace MicroService.Api1
@@ -30,26 +31,32 @@ namespace MicroService.Api1
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-
-            #region Swagger
-            services.AddSwaggerGen(s =>
-                     {
-                         s.SwaggerDoc(Configuration["Service:DocName"], new Info
-                         {
-                             Title = Configuration["Service:Title"],
-                             Version = Configuration["Service:Version"],
-                             Description = Configuration["Service:Description"],
-                             Contact = new Contact
-                             {
-                                 Name = Configuration["Service:Contact:Name"],
-                                 Email = Configuration["Service:Contact:Email"]
-                             }
-                         });
-
-                //var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-                //var xmlPath = Path.Combine(basePath, Configuration["Service:XmlFile"]);
-                //s.IncludeXmlComments(xmlPath);
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("MicroService.Api1", new Info { Title = "基础数据服务", Version = "v1" });
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var xmlPath = Path.Combine(basePath, "MicroService.Api1.xml");
+                options.IncludeXmlComments(xmlPath);
             });
+            #region Swagger
+            //services.AddSwaggerGen(s =>
+            //         {
+            //             s.SwaggerDoc(Configuration["Service:DocName"], new Info
+            //             {
+            //                 Title = Configuration["Service:Title"],
+            //                 Version = Configuration["Service:Version"],
+            //                 Description = Configuration["Service:Description"],
+            //                 Contact = new Contact
+            //                 {
+            //                     Name = Configuration["Service:Contact:Name"],
+            //                     Email = Configuration["Service:Contact:Email"]
+            //                 }
+            //             });
+
+            //             var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+            //             var xmlPath = Path.Combine(basePath, Configuration["Service:XmlFile"]);
+            //             s.IncludeXmlComments(xmlPath);
+            //         });
             #endregion
         }
 
@@ -100,8 +107,9 @@ namespace MicroService.Api1
             });
             app.UseSwaggerUI(s =>
             {
-                s.SwaggerEndpoint($"/doc/{Configuration["Service:DocName"]}/swagger.json",
-                    $"{Configuration["Service:Name"]} {Configuration["Service:Version"]}");
+                //s.SwaggerEndpoint($"/doc/{Configuration["Service:DocName"]}/swagger.json",
+                //    $"{Configuration["Service:Name"]} {Configuration["Service:Version"]}");
+                s.SwaggerEndpoint("/doc/MicroService.Api1/swagger.json", "MicroService.Api1");
             });
             #endregion
           
@@ -109,7 +117,7 @@ namespace MicroService.Api1
         private static void ConfigurationOverview(ConsulClientConfiguration obj)
         {
             //consul的地址
-            obj.Address = new Uri("http://127.0.0.1:8500");
+            obj.Address = new Uri("http://192.168.3.38:8500");
             //数据中心命名
             obj.Datacenter = "dc1";
         }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace MicroService.APIGateway
 {
@@ -28,6 +29,10 @@ namespace MicroService.APIGateway
         {    // Ocelot
             services.AddOcelot(Configuration);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("ApiGateway", new Info { Title = "网关服务", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,7 +43,16 @@ namespace MicroService.APIGateway
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();       // Ocelot
+            var apis = new List<string> { "MicroService.Api1", "MicroService.Api1" };
+            app.UseMvc()
+               .UseSwagger()
+               .UseSwaggerUI(options =>
+               {
+                   apis.ForEach(m =>
+                   {
+                       options.SwaggerEndpoint($"/doc/{m}/swagger.json", m);
+                   });
+               });
             app.UseOcelot().Wait();
         }
     }

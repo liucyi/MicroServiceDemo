@@ -1,5 +1,23 @@
 ﻿{
   "ReRoutes": [
+    { //MicroService.Api1/swagger
+      "DownstreamPathTemplate": "/doc/MicroService.Api1/swagger.json",
+      "DownstreamScheme": "http",
+      "ServiceName": "MicroService.Api1",
+      "LoadBalancer": "RoundRobin",
+      "UseServiceDiscovery": true,
+      "UpstreamPathTemplate": "/doc/MicroService.Api1/swagger.json",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ]
+    }, //MicroService.Api2/swagger
+    {
+      "DownstreamPathTemplate": "/doc/Api2/swagger.json",
+      "DownstreamScheme": "http",
+      "ServiceName": "Api2",
+      "LoadBalancer": "RoundRobin",
+      "UseServiceDiscovery": true,
+      "UpstreamPathTemplate": "/doc/Api2/swagger.json",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ]
+    },
     // API:CAS.ClientService
     {
       "DownstreamPathTemplate": "/api/OneValues",
@@ -8,8 +26,16 @@
         {
           "Host": "127.0.0.1",
           "Port": "5001"
+        },
+        {
+          "Host": "127.0.0.1",
+          "Port": "5002"
         }
       ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "ServiceName": "MicroService.Api1",
       "UpstreamPathTemplate": "/OneValues",
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "RateLimitOptions": {
@@ -29,6 +55,7 @@
           "Port": "5002"
         }
       ],
+      "ServiceName": "Api2",
       "UpstreamPathTemplate": "/TwoValues",
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "RateLimitOptions": {
@@ -43,7 +70,7 @@
   "GlobalConfiguration": {
     //"BaseUrl": "https://api.mybusiness.com"
     "ServiceDiscoveryProvider": {
-      "Host": "127.0.0.1", // Consul Service IP
+      "Host": "192.168.3.38", // Consul Service IP
       "Port": 8500 // Consul Service Port
     }
   },

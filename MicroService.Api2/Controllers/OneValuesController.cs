@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-namespace MicroService.Api1.Controllers
+namespace MicroService.Api2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
