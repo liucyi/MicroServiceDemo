@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace MicroService.Api1
 {
@@ -14,6 +15,7 @@ namespace MicroService.Api1
     {
         public static void Main(string[] args)
         {
+            //NLogBuilder.ConfigureNLog("nlog.config");
             Console.Title = "MicroService.Api1";
             CreateWebHostBuilder(args).Build().Run();
         }

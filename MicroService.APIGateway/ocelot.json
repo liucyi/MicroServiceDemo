@@ -65,6 +65,26 @@
         "PeriodTimespan": 15, // 多少秒之后客户端可以重试
         "Limit": 10 // 在统计时间段内允许的最大请求数量
       }
+    }, // API:CAS.ClientService
+    {
+      "DownstreamPathTemplate": "/api/notice",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": "5000"
+        }
+      ],
+      "ServiceName": "Api2",
+      "UpstreamPathTemplate": "/notice",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [ "admin" ], // 白名单
+        "EnableRateLimiting": true, // 是否启用限流
+        "Period": "1m", // 统计时间段：1s, 5m, 1h, 1d
+        "PeriodTimespan": 15, // 多少秒之后客户端可以重试
+        "Limit": 10 // 在统计时间段内允许的最大请求数量
+      }
     }
   ],
   "GlobalConfiguration": {
@@ -74,7 +94,19 @@
       "Port": 8500 // Consul Service Port
     }
   },
-  
+  "watches": [
+    {
+      "type": "checks",
+      "handler_type": "http",
+      "state": "critical",
+      "http_handler_config": {
+       "path": "http://127.0.0.1:5000/notice",
+        "method": "GET",
+        "timeout": "10s",
+        "header": { "Authorization": [ "token" ] }
+      }
+    }
+  ],
   "RateLimitOptions": {
     "DisableRateLimitHeaders": false, // Http头  X-Rate-Limit 和 Retry-After 是否禁用
     "QuotaExceededMessage": "Too many requests, are you OK?", // 当请求过载被截断时返回的消息

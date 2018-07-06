@@ -4,18 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace MicroService.Api1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class OneValuesController : ControllerBase
-    {
+    {        private ILogger _logger;
         public IConfiguration Configuration { get; }
-        public OneValuesController(IConfiguration configuration)
+        public OneValuesController(IConfiguration configuration,ILogger<OneValuesController> logger)
         {
-            Configuration = configuration;
+            Configuration = configuration;     _logger = logger;
         }
+
+         
         // GET api/values
         private static int _count = 0;
         // GET api/values
@@ -28,7 +31,8 @@ namespace MicroService.Api1.Controllers
             {
               //  System.Threading.Thread.Sleep(5000);
             }
-
+            _logger.LogInformation($"{Configuration["Service:Name"]}测试一下，不要紧张!");
+            _logger.LogWarning("不要紧张");
             return new string[] { $"ClinetService: {DateTime.Now.ToString()}{Configuration["Service:Name"]} {Environment.MachineName} " +
                 $"OS: {Environment.OSVersion.VersionString}" };
         }
