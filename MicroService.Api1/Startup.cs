@@ -33,14 +33,15 @@ namespace MicroService.Api1
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddSwaggerGen(options =>
+          
+            #region Swagger
+             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("MicroService.Api1", new Info { Title = "基础数据服务", Version = "v1" });
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
                 var xmlPath = Path.Combine(basePath, "MicroService.Api1.xml");
                 options.IncludeXmlComments(xmlPath);
-            });
-            #region Swagger
+            }); 
             //services.AddSwaggerGen(s =>
             //         {
             //             s.SwaggerDoc(Configuration["Service:DocName"], new Info

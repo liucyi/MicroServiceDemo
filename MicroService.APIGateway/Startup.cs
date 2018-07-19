@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,13 +28,29 @@ namespace MicroService.APIGateway
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {    // Ocelot
-            services.AddOcelot(Configuration);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddSwaggerGen(options =>
+        {    
+            services.AddSwaggerGen(options1 =>
             {
-                options.SwaggerDoc("ApiGateway", new Info { Title = "网关服务", Version = "v1" });
+                options1.SwaggerDoc("ApiGateway", new Info { Title = "网关服务", Version = "v1" });
             });
+            #region IdentityService
+            Action<IdentityServerAuthenticationOptions> options = o =>
+              {
+                //IdentityService认证服务的地址
+                o.Authority = "http://localhost:9500";
+                //IdentityService项目中Config类中定义的ApiName
+                o.ApiName = "s2api"; //
+                o.RequireHttpsMetadata = false;
+                  o.SupportedTokens = SupportedTokens.Both;
+                //IdentityService项目中Config类中定义的Secret
+                o.ApiSecret = "secret";
+              };
+            // Ocelot
+         //   services.AddOcelot(Configuration);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddOcelot()
+                .AddAdministration("/admin", options); 
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +61,7 @@ namespace MicroService.APIGateway
                 app.UseDeveloperExceptionPage();
             }  
             loggerFactory.AddNLog();//添加NLog
-            var apis = new List<string> { "MicroService.Api1", "MicroService.Api1" };
+            var apis = new List<string> { "MicroService.Api1", "MicroService.Api2" };
             app.UseMvc()
                .UseSwagger()
                .UseSwaggerUI(options =>

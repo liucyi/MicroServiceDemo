@@ -5,17 +5,29 @@
       "DownstreamScheme": "http",
       "ServiceName": "MicroService.Api1",
       "LoadBalancer": "RoundRobin",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": "5001"
+        }
+      ],
       "UseServiceDiscovery": true,
       "UpstreamPathTemplate": "/doc/MicroService.Api1/swagger.json",
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ]
     }, //MicroService.Api2/swagger
     {
-      "DownstreamPathTemplate": "/doc/Api2/swagger.json",
+      "DownstreamPathTemplate": "/doc/MicroService.Api2/swagger.json",
       "DownstreamScheme": "http",
-      "ServiceName": "Api2",
+      "ServiceName": "MicroService.Api2",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": "5002"
+        }
+      ],
       "LoadBalancer": "RoundRobin",
       "UseServiceDiscovery": true,
-      "UpstreamPathTemplate": "/doc/Api2/swagger.json",
+      "UpstreamPathTemplate": "/doc/MicroService.Api2/swagger.json",
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ]
     },
     // API:CAS.ClientService
@@ -55,7 +67,7 @@
           "Port": "5002"
         }
       ],
-      "ServiceName": "Api2",
+      "ServiceName": "MicroService.Api2",
       "UpstreamPathTemplate": "/TwoValues",
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "RateLimitOptions": {
@@ -75,7 +87,7 @@
           "Port": "5000"
         }
       ],
-      "ServiceName": "Api2",
+      "ServiceName": "MicroService.Api2",
       "UpstreamPathTemplate": "/notice",
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "RateLimitOptions": {
